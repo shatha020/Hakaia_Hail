@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#faf7f2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>حكايا حائل | راوي حائل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="heritage-ui.css">
+</head>
+<body>
+
+  <div class="bg-pattern" aria-hidden="true"></div>
+
+  <!-- ═══ الهيدر + شريط الرحلة (ثابت عند التمرير) ═══ -->
+  <div class="sticky-top">
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <div class="logo-mark" aria-hidden="true">
+          <i class="fa-solid fa-mountain-sun"></i>
+        </div>
+        <div>
+          <h1 class="site-title" data-i18n="siteTitle">حكايا حائل</h1>
+          <p class="site-tagline" data-i18n="tagline">منصة تراثية ذكية — راوي، سوق، مسارات، وإنجازات</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="lang-switcher">
+          <i class="fa-solid fa-globe lang-icon" aria-hidden="true"></i>
+          <select id="langSelect" class="lang-select" aria-label="اختر اللغة">
+            <option value="ar">🇸🇦 العربية</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="ur">🇵🇰 اردو</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <nav class="journey-steps" aria-label="رحلة المستخدم">
+      <ol class="journey-list" id="journeyList">
+        <li class="journey-step active" data-step="1">
+          <span class="step-num"><i class="fa-solid fa-camera"></i></span>
+          <span class="step-label" data-i18n="stepCapture">التصوير</span>
+        </li>
+        <li class="journey-step" data-step="2">
+          <span class="step-num"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+          <span class="step-label" data-i18n="stepRecognize">التعرف</span>
+        </li>
+        <li class="journey-step" data-step="3">
+          <span class="step-num"><i class="fa-solid fa-book-open"></i></span>
+          <span class="step-label" data-i18n="stepStory">السرد الصوتي</span>
+        </li>
+        <li class="journey-step" data-step="4">
+          <span class="step-num"><i class="fa-solid fa-store"></i></span>
+          <span class="step-label" data-i18n="stepLocal">الدعم المحلي</span>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <main class="main-content">
+
+    <!-- ═══ تبويب: الراوي (الماسح) ═══ -->
+    <div class="tab-panel active" data-tab="narrator" id="tabNarrator">
+
+      <section class="camera-section card" aria-labelledby="camera-heading">
+        <h2 id="camera-heading" class="section-title">
+          <i class="fa-solid fa-camera title-icon" aria-hidden="true"></i>
+          <span data-i18n="cameraTitle">اكتشف المعلم التاريخي</span>
+        </h2>
+        <p class="section-desc" data-i18n="cameraDesc">
+          وجّه الكاميرا أو ارفع صورة — يتعرّف النظام على النقوش والمعالم ويحكي قصتها.
+        </p>
+
+        <div class="camera-wrapper">
+          <video id="cameraFeed" autoplay playsinline muted aria-label="عرض الكاميرا المباشر"></video>
+          <img id="uploadPreview" class="upload-preview hidden" alt="صورة مرفوعة">
+          <canvas id="captureCanvas" hidden aria-hidden="true"></canvas>
+          <div id="cameraOverlay" class="camera-overlay hidden">
+            <div class="spinner"></div>
+            <p id="overlayMessage">جاري التحليل...</p>
+          </div>
+          <div id="cameraPlaceholder" class="camera-placeholder">
+            <i class="fa-solid fa-landmark placeholder-icon" aria-hidden="true"></i>
+            <p data-i18n="placeholder">اضغط «تشغيل الكاميرا» أو «رفع صورة»</p>
+          </div>
+          <div id="visionBadgeOverlay" class="vision-badge-overlay hidden">
+            <i class="fa-solid fa-brain"></i>
+            <span id="visionEngineLabel">Teachable Machine AI</span>
+          </div>
+        </div>
+
+        <div class="camera-controls">
+          <button id="btnStartCamera" class="btn btn-secondary" type="button">
+            <i class="fa-solid fa-video"></i>
+            <span data-i18n="btnStartCamera">تشغيل الكاميرا</span>
+          </button>
+          <button id="btnCapture" class="btn btn-primary" type="button" disabled>
+            <i class="fa-solid fa-camera-retro"></i>
+            <span data-i18n="btnCapture">التقاط وتحليل</span>
+          </button>
+          <label class="btn btn-upload" for="imageUpload">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span data-i18n="btnUpload">رفع صورة</span>
+          </label>
+          <input type="file" id="imageUpload" accept="image/*" hidden>
+        </div>
+        <p id="statusMessage" class="status-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="resultSection" class="result-section card hidden" aria-labelledby="result-heading">
+        <h2 id="result-heading" class="section-title">
+          <i class="fa-solid fa-check-circle title-icon" aria-hidden="true"></i>
+          <span data-i18n="resultTitle">المعلم المكتشف</span>
+        </h2>
+        <div class="landmark-result">
+          <img id="capturedImage" src="" alt="صورة المعلم" class="captured-thumb">
+          <div class="landmark-info">
+            <h3 id="landmarkName">—</h3>
+            <p id="landmarkConfidence" class="confidence-text"></p>
+            <div id="confidenceBar" class="confidence-bar hidden">
+              <div id="confidenceFill" class="confidence-fill"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="storySection" class="story-section card hidden" aria-labelledby="story-heading">
+        <div class="story-header">
+          <h2 id="story-heading" class="section-title">
+            <i class="fa-solid fa-scroll title-icon" aria-hidden="true"></i>
+            <span data-i18n="storyTitle">راوي حائل يحكي...</span>
+          </h2>
+          <div class="speech-controls">
+            <button id="btnPlaySpeech" class="btn btn-ghost btn-icon" type="button" title="تشغيل">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button id="btnPauseSpeech" class="btn btn-ghost btn-icon" type="button" title="إيقاف مؤقت">
+              <i class="fa-solid fa-pause"></i>
+            </button>
+            <button id="btnStopSpeech" class="btn btn-ghost btn-icon" type="button" title="إيقاف">
+              <i class="fa-solid fa-stop"></i>
+            </button>
+          </div>
+        </div>
+        <blockquote id="storyText" class="story-text"></blockquote>
+        <div id="storyLoading" class="story-loading hidden">
+          <div class="spinner spinner-sm"></div>
+          <span data-i18n="storyLoading">راوي حائل يجهّز القصة...</span>
+        </div>
+      </section>
+
+      <section id="chatSection" class="chat-section card hidden" aria-labelledby="chat-heading">
+        <h2 id="chat-heading" class="section-title">
+          <i class="fa-solid fa-comments title-icon" aria-hidden="true"></i>
+          <span data-i18n="chatTitle">اسأل راوي حائل</span>
+        </h2>
+        <p class="section-desc" data-i18n="chatDesc">اسأل عن تاريخ المعلم، أفضل وقت للزيارة، أو الأسر المنتجة القريبة.</p>
+        <div id="chatMessages" class="chat-messages" role="log" aria-live="polite"></div>
+        <form id="chatForm" class="chat-form">
+          <input type="text" id="chatInput" class="chat-input" autocomplete="off"
+                 data-i18n-placeholder="chatPlaceholder" placeholder="اكتب سؤالك هنا...">
+          <button type="submit" id="btnSendChat" class="btn btn-primary btn-chat-send">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </section>
+
+      <section id="servicesSection" class="services-section card hidden" aria-labelledby="services-heading">
+        <h2 id="services-heading" class="section-title">
+          <i class="fa-solid fa-basket-shopping title-icon" aria-hidden="true"></i>
+          <span data-i18n="servicesTitle">أسر منتجة ومقاهي قريبة</span>
+        </h2>
+        <p class="section-desc" data-i18n="servicesDesc">اكتشف المنتجات المحلية والمقاهي بجوار هذا المعلم</p>
+        <div id="servicesGrid" class="services-grid"></div>
+      </section>
+
+    </div>
+
+    <!-- ═══ تبويب: المسارات السياحية ═══ -->
+    <div class="tab-panel hidden" data-tab="routes" id="tabRoutes">
+      <section class="card">
+        <h2 class="section-title">
+          <i class="fa-solid fa-route title-icon"></i>
+          <span data-platform="routesTitle">مسارات سياحية ذكية</span>
+        </h2>
+        <p class="section-desc" data-platform="routesDesc">مسار مخصص بالذكاء الاصطناعي يربط المعالم بالأسر المنتجة</p>
+
+        <div class="routes-form">
+          <div class="form-group">
+            <label data-platform="durationLabel">مدة الزيارة</label>
+            <select id="routeDuration" class="form-select">
+              <option value="6h" data-platform="dur6h">6 ساعات</option>
+              <option value="1d" data-platform="dur1d">يوم واحد</option>
+              <option value="2d" data-platform="dur2d">يومان</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-platform="interestsLabel">اهتماماتك</label>
+            <div class="interest-chips">
+              <button type="button" class="interest-chip active" data-interest="heritage" data-platform="interestArchaeology">آثار</button>
+              <button type="button" class="interest-chip" data-interest="adventure" data-platform="interestAdventure">مغامرات</button>
+              <button type="button" class="interest-chip" data-interest="cafes" data-platform="interestCafes">مقاهي</button>
+              <button type="button" class="interest-chip" data-interest="relax" data-platform="interestRelax">استرخاء</button>
+            </div>
+          </div>
+          <button id="generateRouteBtn" class="btn btn-primary" type="button">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span data-platform="generateRoute">ولّد مساري</span>
+          </button>
+        </div>
+
+        <div id="routeLoading" class="story-loading hidden">
+          <div class="spinner spinner-sm"></div>
+          <span data-platform="generatingRoute">جاري إنشاء المسار...</span>
+        </div>
+        <div id="routeTimeline" class="route-timeline"></div>
+      </section>
+    </div>
+
+    <!-- ═══ تبويب: سوق حائل ═══ -->
+    <div class="tab-panel hidden" data-tab="marketplace" id="tabMarketplace">
+      <section class="card">
+        <h2 class="section-title">
+          <i class="fa-solid fa-store title-icon"></i>
+          <span data-platform="marketTitle">سوق حائل الذكي</span>
+        </h2>
+        <p class="section-desc" data-platform="marketDesc">منتجات الأسر المنتجة والحرفيين المعتمدين</p>
+        <p id="geofenceLabel" class="geofence-label hidden"></p>
+        <div id="marketplaceGrid" class="marketplace-grid"></div>
+        <button id="partnerCtaBtn" class="partner-cta" type="button">
+          <i class="fa-solid fa-handshake"></i>
+          <span data-platform="partnerCta">هل تملك متجراً؟ انضم كشريك مميز</span>
+        </button>
+      </section>
+    </div>
+
+    <!-- ═══ تبويب: إنجازاتي ═══ -->
+    <div class="tab-panel hidden" data-tab="badges" id="tabBadges">
+      <section class="card passport-card">
+        <div class="passport-header">
+          <i class="fa-solid fa-passport"></i>
+          <div>
+            <h2 class="section-title" style="margin:0">
+              <span data-platform="badgesTitle">جواز المستكشف</span>
+            </h2>
+            <p class="section-desc" style="margin:0" data-platform="badgesDesc">اجمع الأختام بمسح المعالم</p>
+          </div>
+        </div>
+        <p id="badgeCounter" class="badge-counter">0 من 7 أختام</p>
+        <div id="couponStatus" class="coupon-status locked"></div>
+        <p class="badge-tap-hint" data-platform="badgeTapHint">اضغط على البطاقة لمعرفة معنى الوسام</p>
+        <div id="badgesGrid" class="badges-grid"></div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- ═══ شريط التنقل السفلي ═══ -->
+  <nav class="bottom-nav" aria-label="التنقل الرئيسي">
+    <button class="bottom-nav-item active" data-tab="narrator" type="button">
+      <i class="fa-solid fa-camera"></i>
+      <span data-platform="navNarrator">الراوي</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="routes" type="button">
+      <i class="fa-solid fa-route"></i>
+      <span data-platform="navRoutes">المسارات</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="marketplace" type="button">
+      <i class="fa-solid fa-store"></i>
+      <span data-platform="navMarket">سوق حائل</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="badges" type="button">
+      <i class="fa-solid fa-medal"></i>
+      <span data-platform="navBadges">إنجازاتي</span>
+    </button>
+  </nav>
+
+  <footer class="site-footer">
+    <p data-i18n="footer">مشروع هاكاثون <strong>جادة حائل</strong> — حكايا حائل يربط التراث بالتقنية والمجتمع المحلي</p>
+  </footer>
+
+  <!-- ═══ Modal: الدفع ═══ -->
+  <div id="checkoutModal" class="modal hidden" role="dialog" aria-labelledby="checkoutTitle">
+    <div class="modal-content">
+      <button id="checkoutClose" class="modal-close" type="button" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
+      <h3 id="checkoutTitle" data-platform="checkoutTitle">تأكيد الطلب</h3>
+      <p id="checkoutNote" class="checkout-note hidden"></p>
+      <div class="checkout-item">
+        <strong id="checkoutItemName">—</strong>
+      </div>
+      <div class="checkout-breakdown">
+        <div class="checkout-row">
+          <span data-platform="productPrice">سعر المنتج</span>
+          <span id="checkoutPrice">—</span>
+        </div>
+        <div class="checkout-row">
+          <span data-platform="platformFee">رسوم المنصة (5%)</span>
+          <span id="checkoutFee">—</span>
+        </div>
+        <div id="checkoutDiscountRow" class="checkout-row discount hidden">
+          <span data-platform="couponDiscount">كوبون خصم 10%</span>
+          <span id="checkoutDiscount">—</span>
+        </div>
+        <div class="checkout-row total">
+          <span data-platform="total">الإجمالي</span>
+          <span id="checkoutTotal">—</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="checkoutCancel" class="btn btn-secondary" type="button" data-platform="cancel">إلغاء</button>
+        <button id="checkoutConfirm" class="btn btn-primary" type="button" data-platform="confirmPay">تأكيد الطلب</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Modal: وسام جديد ═══ -->
+  <div id="badgeModal" class="modal hidden" role="dialog">
+    <div class="modal-content badge-modal-content">
+      <div id="badgeModalIcon" class="badge-modal-icon"><i class="fa-solid fa-medal"></i></div>
+      <h3 id="badgeModalTitle">مبروك!</h3>
+      <p id="badgeModalName" class="badge-modal-name">—</p>
+      <p id="badgeModalCoupon" class="badge-modal-coupon">خصم 10%</p>
+      <div class="modal-actions">
+        <button id="badgeModalClose" class="btn btn-secondary" type="button" data-platform="close">إغلاق</button>
+        <button id="badgeModalMarket" class="btn btn-primary" type="button" data-platform="goToMarket">تسوق الآن</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

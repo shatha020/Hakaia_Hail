@@ -1,0 +1,27 @@
+# مفاتيح API — لا ترفعها أبداً على GitHub
+.env
+.env.local
+.env.*.local
+
+# نظام التشغيل
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# محررات
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node (إن أضفت لاحقاً)
+node_modules/
+
+# سجلات
+*.log

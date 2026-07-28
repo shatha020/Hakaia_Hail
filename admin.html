@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5f0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>حكايا حائل | لوحة الأثر — إدارة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="heritage-ui.css">
+</head>
+<body class="admin-page">
+
+  <div class="bg-pattern" aria-hidden="true"></div>
+
+  <header class="admin-page-header">
+    <div class="admin-page-header-inner">
+      <div class="admin-page-brand">
+        <span class="admin-only-badge" data-platform="adminOnlyBadge">دخول إداري</span>
+        <h1 class="admin-page-title">
+          <i class="fa-solid fa-chart-line"></i>
+          <span data-platform="adminTitle">لوحة الأثر والاستدامة</span>
+        </h1>
+        <p class="admin-page-desc" data-platform="adminDesc">بيانات حية لدعم متخذي القرار والاستدامة</p>
+      </div>
+      <div class="admin-page-actions">
+        <select id="adminLangSelect" class="lang-select" aria-label="Language">
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ur">🇵🇰 اردو</option>
+        </select>
+        <a href="index.html" class="btn btn-secondary btn-sm admin-back-link">
+          <span data-platform="backToSite">← العودة للمنصة</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-page-main">
+    <section class="card admin-card">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fa-solid fa-coins"></i>
+          <span class="stat-value" id="statSales">—</span>
+          <span class="stat-label" data-platform="totalSales">إجمالي الموجّه للأسر المنتجة</span>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-camera"></i>
+          <span class="stat-value" id="statScans">—</span>
+          <span class="stat-label" data-platform="successfulScans">مسوحات ناجحة</span>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="stat-value" id="statOrders">—</span>
+          <span class="stat-label" data-platform="totalOrders">طلبات عبر المنصة</span>
+        </div>
+      </div>
+
+      <h3 class="subsection-title" data-platform="landmarksRankingTitle">أكثر المعالم زيارةً</h3>
+      <p class="subsection-desc" data-platform="landmarksRankingDesc">ترتيب المعالم حسب عدد المسوحات عبر المنصة</p>
+      <div id="landmarksRanking" class="landmarks-ranking"></div>
+
+      <h3 class="subsection-title" data-platform="sentimentTitle">تحليل انطباعات الزوار</h3>
+      <div class="sentiment-bar">
+        <div id="sentPositive" class="sent-seg positive" style="width:87%"></div>
+        <div id="sentNeutral" class="sent-seg neutral" style="width:10%"></div>
+        <div id="sentNegative" class="sent-seg negative" style="width:3%"></div>
+      </div>
+      <div class="sentiment-legend">
+        <span><i class="dot positive"></i> <span data-platform="positive">إيجابي</span> <span id="sentLegendPositive">87%</span></span>
+        <span><i class="dot neutral"></i> <span data-platform="neutral">محايد</span> <span id="sentLegendNeutral">10%</span></span>
+        <span><i class="dot negative"></i> <span data-platform="negative">سلبي</span> <span id="sentLegendNegative">3%</span></span>
+      </div>
+
+      <button id="exportReportBtn" class="btn btn-secondary" type="button">
+        <i class="fa-solid fa-file-export"></i>
+        <span data-platform="exportReport">تصدير تقرير</span>
+      </button>
+    </section>
+  </main>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

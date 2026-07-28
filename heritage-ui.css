@@ -913,9 +913,44 @@ body {
 .badge-modal-coupon { color: var(--color-teal); }
 
 /* ── Admin ── */
+.admin-page {
+  position: relative;
+  min-height: 100vh;
+  color: var(--color-text);
+}
+
+.admin-page-header,
+.admin-page-main {
+  position: relative;
+  z-index: 1;
+}
+
 .admin-page-header {
   background: linear-gradient(145deg, var(--color-navy), var(--color-teal-dark));
   border-bottom: 3px solid var(--color-gold);
+  color: #fff;
+}
+
+.admin-page-desc {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.admin-page-actions .lang-select {
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.5rem;
+}
+
+.admin-page-actions .admin-back-link.btn-secondary {
+  color: var(--color-wood-deep);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: var(--color-gold);
+}
+
+.admin-page-main {
+  color: var(--color-text);
 }
 
 .admin-page-title {
@@ -924,8 +959,32 @@ body {
 }
 
 .admin-card {
+  background: var(--color-white);
+  color: var(--color-text);
   border: 1px solid rgba(42, 107, 104, 0.25);
   box-shadow: var(--shadow-sm);
+}
+
+.admin-card .subsection-title {
+  color: var(--color-wood-deep);
+}
+
+.admin-card .subsection-desc,
+.admin-card .stat-label,
+.admin-card .sentiment-legend {
+  color: var(--color-text-muted);
+}
+
+.admin-card .stat-value {
+  color: var(--color-teal-dark);
+}
+
+.admin-card .ranking-name {
+  color: var(--color-wood-deep);
+}
+
+.admin-card .ranking-stats {
+  color: var(--color-text-muted);
 }
 
 .subsection-title {
